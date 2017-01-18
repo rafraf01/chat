@@ -38,8 +38,13 @@ return array(
             // You can remove this line anytime.
 //            $theme->setTitle('Copyright ©  2013 - Laravel.in.th');
 
-            $theme->asset()->add('socket','https://cdn.socket.io/socket.io-1.3.4.js');
+            $theme->asset()->add('bootstrap', 'assets/css/bootstrap.min.css');
+            $theme->asset()->add('mcustom.css','assets/css/jquery.mCustomScrollbar.css');
+
             $theme->asset()->add('jquery.min.js','assets/js/jquery.min.js');
+            $theme->asset()->add('bootstrap-js', 'assets/js/bootstrap.min.js');
+            $theme->asset()->add('socket','https://cdn.socket.io/socket.io-1.3.4.js');
+            $theme->asset()->add('mcustom.js','assets/js/jquery.mCustomScrollbar.concat.min.js');
 
             // Breadcrumb template.
             // $theme->breadcrumb()->setTemplate('
