@@ -18,6 +18,19 @@
                 background: #434753;
                 float:left;
             }
+                .on-active {
+                    position: relative;
+                    height: 90px;
+                }
+                    span.active-fullname {
+                        display: block;
+                        float: left;
+                        position: absolute;
+                        font-size: 20px;
+                        color: #fff;
+                        left: 90px;
+                        top: 35px;
+                    }
                 .search {
                     height:45px !important;
                 }
@@ -36,7 +49,7 @@
                     -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
                     box-shadow: 0 6px 12px rgba(0,0,0,.175);
                 }
-                .online, .offline {
+                .online, .offline, .away, .disturb {
                     height: 8px !important;
                     width: 8px !important;
                     border-radius: 50%;
@@ -47,13 +60,11 @@
                     left: 65px;
                     font-style: italic;
                 }
-                .online {
-                    background: green;
-                }
-                .offline {
-                    background: red;
-                }
-                .online:after , .offline:after {
+                .online { background: green;}
+                .offline { background: red;}
+                .away {background: #facf00;}
+                .disturb {background: red;}
+                .online:after , .offline:after, .away:after, .disturb:after {
                     color: grey;
                     display: inline-block;
                     float: left;
@@ -66,6 +77,13 @@
                 }
                 .offline:after {
                     content: "offline";
+                }
+                .away:after {
+                    content: "away";
+                }
+                .disturb:after {
+                    content: "do not disturb";
+                    width:90px;
                 }
                 .user-list ul {padding:0;}
                     .user-list ul li {
@@ -81,7 +99,7 @@
                         height: 50px;
                         position: relative;
                     }
-                        .user-list ul > li > .users > a {
+                        .user-list ul > li > .users > span {
                             position: relative;
                             font-size: 15px;
                             top: 8px;
@@ -111,7 +129,7 @@
                         right: 0;
                         font-size: 30px;
                         color: rgba(0,0,0,0.3);
-                        top: 60px;
+                        top: 30px;
                         right: 10px;
                       }
                         .settings i:active, .settings i:focus {
@@ -119,32 +137,58 @@
                         }
                     .receiver {
                         width:250px;
-                        height:100%;
+                        height:70px;
                     }
                     .active-chat-receiver {
                         height:70px;
                         width:70px;
                         border:3px solid grey;
-                        background: #fff;
+                        background: #fff url('https://lh3.googleusercontent.com/-pCSh55YyGfc/AAAAAAAAAAI/AAAAAAAAAAA/hpphxzBOuH0/photo.jpg') no-repeat center/cover;
                         position: relative;
                         border-radius: 50%;
                         top: 14px;
                         left: 14px;
+                        display:block;
                     }
                     span.name {
                         display: inline-block;
                         position: absolute;
                         top: 25px;
                         font-size: 18px;
-                        margin-lefT: 25px;
+                        margin-left: 25px;
                         font-weight: 700;
                     }
+                    .user-state, .active-user , .offline-user, .away-user, .disturb-user{
+                        height: 16px !important;
+                        width: 16px !important;
+                        border-radius: 50%;
+                        position: absolute;
+                        margin-left: 60px;
+                        bottom: 5px;
+                    }
+                    .active-user { background: #7fba00 url(../assets/img/online.png) no-repeat center /cover; }
+                    .offline-user { background: #d3d3d3 url(../assets/img/offline.png) no-repeat center /cover; }
+                    .away-user { background: #c8b305 url(../assets/img/away.png) no-repeat center /cover;}
+                    .disturb-user { background: #a70004 url(../assets/img/disturb.png) no-repeat center /cover;}
+
+                        span.change-status {
+                            display: block;
+                            float: right;
+                            position: absolute;
+                            left: 85px;
+                            color: grey;
+                            font-style: italic;
+                        }
+                        ul#status-menu {
+                            float: left;
+                            margin-left: 60px;
+                            font-size: 15px;
+                        }
                 .chat-body {
                     height: 430px;
                     position: relative;
                     border-top: 1px solid;
                     border-bottom: 1px solid;
-                    top: 30px;
                     background: #e5e5e5;
                     margin:0;
                     padding: 0 10px 10px;
@@ -227,11 +271,11 @@
                                 height:60px;
                             }
                     .chat-send-message {
-                        height: auto;
+                        /*height: auto;*/
                         width: 100%;
                         background: #f1f5f8;
-                        position: relative;
-                        top: 30px;
+                        /*position: relative;*/
+                        /*top: 30px;*/
                     }
                         .chat-send-message textarea.form-control {
                             margin-top:15px;
@@ -245,9 +289,34 @@
 
     </style>
 <div class="chat-container">
-    <input type="hidden" id="uid" class="UserIsLogged" value="{{ Auth::user()->user_id }}" data-userid="{{ Auth::user()->user_id }}">
+    <input type="hidden" id="uid" class="UserIsLogged" value="{{ Auth::user()->user_id }}" data-userid="{{ Auth::user()->user_id }}" data-user-status="{{ Auth::user()->status }}">
     <div class="user-container">
         <div class="col-md-12">
+            <div class="on-active">
+                <img class="active-chat-receiver">
+                <div class="user-state
+                <?php
+                    $user_status = Auth::user()->status;
+                       if ($user_status == 0){
+                           echo 'offline-user';
+                       }elseif ($user_status == 1){
+                           echo 'active-user';
+                       }elseif ($user_status == 2){
+                           echo 'away-user';
+                       }elseif ($user_status == 3){
+                           echo 'disturb-user';
+                       }
+                ?>" id="user-state" data-toggle="dropdown"></div>
+
+                <span class="change-status"></span>
+                <ul class="dropdown-menu" id="status-menu" role="menu" aria-labelledby="menu1">
+                    <?php $status = \Illuminate\Support\Facades\DB::table('user_status')->get(); ?>
+                    @foreach ($status as $key=> $current_state)
+                        <li role="presentation" id="status-state"><a role="menuitem" tabindex="-1" href="#" data-status-id="{{ $current_state->user_status_id }}">{{ $current_state->user_status }}</a></li>
+                    @endforeach
+                </ul>
+                <span class="active-fullname">{{  Auth::user()->first_name.' '. Auth::user()->last_name }} </span>
+            </div>
             <input type="text" class="search form-control" placeholder="search">
             <div class="user-list">
                 <ul id="users">
@@ -258,63 +327,29 @@
     </div>
     <div class="chatbox-container">
         <div class="chat-who">
-            <div class="chat-current">
+<!--            <div class="chat-current">-->
                 <div class="settings">
 <!--                    <i class="glyphicon glyphicon-cog"></i>-->
                     <a class="logout" href="{{ url('logout') }}">logout</a>
                 </div>
                 <div class="receiver">
-                    <img class="active-chat-receiver">
-                       <span class="name">{{ Auth::user()->first_name }}</span>
+<!--                    <img class="active-chat-receiver">-->
+                        <span class="name"><!-- {{ Auth::user()->first_name.' '. Auth::user()->last_name }}--></span>
                 </div>
-            </div>
+        </div>
+<!--            </div>-->
             <div class="panel-body chat-body">
                 <ul>
-                    <!--   message sent-->
-<!--                    <li class="chat-send">-->
-<!--                        <div class="row msg-container base-sent">-->
-<!--                            <div class="col-md-11">-->
-<!--                                <div class="messages msg-sent">-->
-<!--                                    <p>-->
-<!--                                        Hello! I'm Juan dela Cruz from Philippines. <br>-->
-<!--                                        Can I have your phone number?-->
-<!--                                    </p>-->
-<!--                                    <time datetime="2017-1-16">Raf &bull; 5 seconds ago</time>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                            <div class="col-md-1 avatar">-->
-<!--                                <img class="img-responsive " src="http://www.bitrebels.com/wp-content/uploads/2011/02/Original-Facebook-Geek-Profile-Avatar-1.jpg">-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </li>-->
-<!--                    <li class="chat-receiver">-->
-<!--                        <!-- message receive -->
-<!--                        <div class="row msg-container base-receive">-->
-<!--                            <div class="col-md-1 avatar">-->
-<!--                                <img class="img-responsive " src="http://www.bitrebels.com/wp-content/uploads/2011/02/Original-Facebook-Geek-Profile-Avatar-1.jpg">-->
-<!--                            </div>-->
-<!--                            <div class="col-md-11">-->
-<!--                                <div class="messages msg-receive">-->
-<!--                                    <p>-->
-<!--                                        I'm sorry. I'm not giving my number to a stranger.<br>-->
-<!--                                        Humanap ka na lang ng ibang maloloko mo. Haha!-->
-<!--                                    </p>-->
-<!--                                    <time datetime="2017-1-16">Angel &bull; 1 minute ago</time>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </li>-->
-                </ul>
+                    <!-- Display Chat Message -->
+               </ul>
             </div>
-            <div class="chat-send-message">
-                <div class="col-md-12">
-                    <div class="col-md-10">
-                        <textarea id="msg" rows="3" class="form-control" placeholder="Type your message..."></textarea>
-                    </div>
-                    <div class="col-md-2">
-                        <button id="btn-send" class="btn btn-primary btn-lg">Send</button>
-                    </div>
-                </div>
+
+        <div class="chat-send-message">
+            <div class="col-md-10">
+                <textarea id="msg" rows="3" class="form-control" placeholder="Type your message..."></textarea>
+            </div>
+            <div class="col-md-2">
+                <button id="btn-send" class="btn btn-primary btn-md">Send</button>
             </div>
         </div>
     </div>
@@ -327,19 +362,41 @@
 
         var socket = io.connect('192.168.1.188:8890');
         $('#btn-send').on('click',function(){
-            save_message();
 
-            socket.emit('chat message', {
-                message:$('#msg').val(),
-                current:$('#uid').data('userid'),
-                logged_user:$('.name').text()
-            });
+            if ($('#msg').val() == ''){
+                return false;
+            }
+            else {
+                socket.emit('chat message', {
+                    message:$('#msg').val(),
+                    current:$('#uid').data('userid'),
+                    logged_user:$('.active-fullname').text()
+                });
+
+                save_message();
+            }
             return false;
         });
+
+//        socket.on('select chat',function{
+//            socket.emit('select chat',{
+//                selected_chat:$('')
+//            })
+//        });
 
         socket.emit('active user', {active:true});
 
         socket.on('active user', function(data){
+
+            $('body').delegate('#users li','click',function(){
+//
+//                var getdata = $('#users').find("li.active span").text();
+//                $('.name').html(getdata);
+
+                $('.user-list').removeClass('active');
+                $(this).addClass('active');
+
+            });
 
             if (data.active){
                 load();
@@ -347,50 +404,67 @@
         });
 
         socket.on('chat message', function(msg){
+//            var classname = "";
+
             if (msg.current == $('#uid').data('userid')){
                 $('.chat-body ul').append($(
                     '<li class="chat-send">'+
-                        '<div class="row msg-container base-sent">'+
-                        '   <div class="col-md-11">'+
-                        '       <div class="messages msg-sent">'+
-                        '           <p>'+ msg.message +'</p>'+
-                        '           <time datetime="2017-1-16"><i>'+ msg.logged_user +' &bull; 5 seconds ago</i></time>'+
-                        '       </div>'+
-                        '   </div>'+
-                        '   <div class="col-md-1 avatar">'+
-                        '       <img class="img-responsive " src="http://www.bitrebels.com/wp-content/uploads/2011/02/Original-Facebook-Geek-Profile-Avatar-1.jpg">'+
-                        '   </div>'+
-                        '</div>'+
-                        '</li>'));
+                    '   <div id="chat-status" class="row msg-container base-sent">'+
+                    '       <div class="col-md-11">'+
+                    '           <div class="messages msg-sent">'+
+                    '               <p>'+ msg.message +'</p>'+
+                    '               <time datetime="2017-1-16"><i>'+ msg.logged_user +' &bull; 5 seconds ago</i></time>'+
+                    '           </div>'+
+                    '       </div>'+
+                    '       <div class="col-md-1 avatar">'+
+                    '           <img class="img-responsive " src="http://www.bitrebels.com/wp-content/uploads/2011/02/Original-Facebook-Geek-Profile-Avatar-1.jpg">'+
+                    '       </div>'+
+                    '   </div>'+
+                    '</li>'));
+
 
                 $('.chat-body').mCustomScrollbar({
                     theme:"dark"
                 }).mCustomScrollbar("scrollTo","bottom",{scrollInertia:0});
+
+//                if ($('.name').text() == msg.logged_user){
+//                    save_message(classname);
+//                }
+
 
             } else {
                 $('.chat-body ul').append($(
                     '<li class="chat-receiver">'+
-                        '<div class="row msg-container base-receive">'+
-                        '   <div class="col-md-1 avatar">'+
-                        '       <img class="img-responsive " src="http://www.bitrebels.com/wp-content/uploads/2011/02/Original-Facebook-Geek-Profile-Avatar-1.jpg">'+
-                        '   </div>'+
-                        '   <div class="col-md-11">'+
-                        '       <div class="messages msg-receive">'+
-                        '           <p>'+ msg.message +'</p>'+
-                        '           <time datetime="2017-1-16"><i>'+ msg.logged_user +' &bull; 5 seconds ago</i></time>'+
-                        '       </div>'+
-                        '   </div>'+
-                        '</div>'+
-                        '</li>'));
+                    '   <div id="chat-status" class="row msg-container base-receive">'+
+                    '       <div class="col-md-1 avatar">'+
+                    '           <img class="img-responsive " src="http://www.bitrebels.com/wp-content/uploads/2011/02/Original-Facebook-Geek-Profile-Avatar-1.jpg">'+
+                    '       </div>'+
+                    '       <div class="col-md-11">'+
+                    '           <div class="messages msg-receive">'+
+                    '               <p>'+ msg.message +'</p>'+
+                    '               <time datetime="2017-1-16"><i>'+ msg.logged_user +' &bull; 5 seconds ago</i></time>'+
+                    '           </div>'+
+                    '       </div>'+
+                    '   </div>'+
+                    '</li>'));
+
 
                 $('.chat-body').mCustomScrollbar({
                     theme:"dark"
                 }).mCustomScrollbar("scrollTo","bottom",{scrollInertia:0});
+
+//                if ($('.name').text() == msg.logged_user){
+//                    save_message(classname);
+//                }
+
             }
 
         });
 
+        $('.user-state').dropdown();
+
     });
+        /* load active user */
         function load(){
             $.ajax({
                 url:'/loadUserActive',
@@ -401,6 +475,7 @@
             });
         }
 
+        /* save message function for every user chat*/
         function save_message(){
             $.ajax({
                 url: '/saveMessage',
@@ -415,6 +490,55 @@
                 }
             });
         }
+
+        /* get user status */
+        function get_user_status() {
+            var current_id = $('#status-menu li#status-state a:focus').attr('data-status-id');
+            $.ajax({
+                url:'/changestate',
+                type:'POST',
+                data: {
+                    'user_id':       $('#uid').data('userid'),
+                    '_token' :       $('meta[name="csrf_token"]').attr('content'),
+                    'data_status_id':     current_id
+                },
+                success:function(data){
+
+                }
+            });
+        }
+
+        /* search ajax */
+        $('.search').on('keyup',function(){
+            var g = $(this).val().toLowerCase();
+            $(".user-list ul li span").each(function() {
+                var s = $(this).text().toLowerCase();
+                $(this).closest('.user-list')[ s.indexOf(g) !== -1 ? 'show' : 'hide' ]();
+            });
+        })
+
+        /* display user current status */
+        $('body').on('click','li#status-state',function() {
+//            var get_status_state = $(this).text();
+//            $('.change-status').text(get_status_state);
+
+            var curStat = $('#status-menu li#status-state a:focus').attr('data-status-id');
+
+            if (curStat == 1) {
+                ($('#user-state').attr('class','active-user'));
+            }
+            if (curStat == 0){
+                ($('#user-state').attr('class','offline-user'));
+            }
+            if (curStat == 2){
+                ($('#user-state').attr('class','away-user'));
+            }
+            if (curStat == 3){
+                ($('#user-state').attr('class','disturb-user'));
+            }
+
+            get_user_status();
+        });
 
 
 </script>

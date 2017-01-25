@@ -68,7 +68,14 @@ class LoginController extends Controller
 
         }else {
             if (Auth::attempt(['email' => $username, 'password' => $password ])){
-                return Redirect::to('/home');
+
+                $id = Auth::id();
+
+                Db::table('users')
+                    ->where('user_id',$id)
+                    ->update(['status' => 1]);
+
+                return Redirect::to('/index');
 
             }else {
                 return Redirect::to('/')

@@ -46,6 +46,14 @@ return array(
             $theme->asset()->add('socket','https://cdn.socket.io/socket.io-1.3.4.js');
             $theme->asset()->add('mcustom.js','assets/js/jquery.mCustomScrollbar.concat.min.js');
 
+                if (\Illuminate\Support\Facades\Auth::check()){
+                    $theme->asset()->add('font-awesome', 'assets/css/font-awesome.min.css');
+                    $theme->asset()->add('jquery.moment', 'assets/plugins/moment/moment.js');
+                    $theme->asset()->add('emojify', 'assets/plugins/emoji/emojify.js');
+
+                }
+
+
             // Breadcrumb template.
             // $theme->breadcrumb()->setTemplate('
             //     <ul class="breadcrumb">

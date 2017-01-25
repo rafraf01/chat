@@ -19,18 +19,21 @@
  * @desc perform function login
  */
 Route::match(array('GET','POST'),'login'            ,   'Auth\LoginController@authenticate');
-Route::match(array('GET','POST'),'logout'           ,   'Auth\LoginController@logout');
+Route::match(array('GET','POST'),'index'             ,   'ChatController@home');
 
 Route::group(['middleware'=>['afterAuth']],function(){
-    Route::get('/home'                     ,    'ChatController@chat');
-//    Route::get('/','ChatController@chatLogin');
-});
-
-Route::group(['middleware'=>['web']],function(){
     Route::get('/','ChatController@chatLogin');
-    Route::post('/','ChatController@chatLogin');
 });
 
-Route::get('/loadUserActive', 'ChatController@LoadActive');
-Route::post('/saveMessage', 'ChatController@saveMessage');
+Route::group(['middleware'=>['auth']],function(){
+    Route::match(array('GET','POST'),'logout'           ,   'Auth\LoginController@logout');
+
+    Route::get('/home'                     ,    'ChatController@chat');
+
+    Route::get('/loadUserActive', 'ChatController@LoadActive');
+    Route::post('/saveMessage', 'ChatController@saveMessage');
+    Route::post('/changestate', 'ChatController@updateStatus');
+});
+
+
 
