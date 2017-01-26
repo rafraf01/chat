@@ -1,13 +1,19 @@
+body, html {
+    height:100%;
+}
 .chat-container {
     margin:0 auto;
     padding:0;
     height:100%;
     width:100%;
+    position: relative;
+    padding-top:15px;
+    padding-bottom:15px;
 }
 .chatbox-container {
-    margin: 15px auto;
-    width: 950px;
-    height: 630px;
+    margin: 0 auto;
+    width: 70%;
+    height: 100%;
     /*background-color: #ccc;*/
     border:1px solid #d3d3d3;
     border-radius:5px;
@@ -92,7 +98,7 @@ ul#status-menu {
 }
 .user-lists ul {padding:0;}
 .user-lists ul li {
-    padding:15px 0px;
+    padding:15px 10px;
     list-style:none;
     height:auto;
     width:100%;
@@ -221,7 +227,7 @@ ul#status-menu {
     margin-left:10px;
 }
 .msg-sent {
-    padding-bottom:20px !important;
+    /*padding-bottom:20px !important;*/
     margin-right: 0px;
 }
 .messages.msg-sent{
@@ -237,18 +243,18 @@ ul#status-menu {
     position: relative;
 }
 .avatar > img {
-    display:block;
+    display: block;
     width: 40px;
-    height:40px;
-    border-radius:50%;
-    margin-top: 17px;
+    height: 40px;
+    border-radius: 50%;
+    margin-top: 7px;
     margin-left: 1px;
 }
 .base-receive .avatar > img {
     margin-bottom: 17px !important;
     position: relative;
-    bottom: 17px;
-    left: 4px;
+    bottom: 4px;
+    left: -1px;
 }
 .chat-send-message {
     height: 100px;

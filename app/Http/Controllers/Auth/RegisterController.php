@@ -6,7 +6,9 @@ use App\User;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\RegistersUsers;
-
+use Illuminate\Support\Facades\Input;
+use DB;
+use Illuminate\Support\Facades\Redirect;
 class RegisterController extends Controller
 {
     /*
@@ -67,5 +69,26 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
+    }
+
+    public function CreateAccount() {
+        $password = Input::get('password');
+        $confirm = Input::get('confirm');
+        $first_name = Input::get('first_name');
+        $middle_name = Input::get('middle_name');
+        $last_name = Input::get('last_name');
+        $email = Input::get('email');
+
+          DB::table('users')
+            ->insert([
+                'email'       => $email,
+                'password'    => bcrypt($password),
+                'first_name'  => $first_name,
+                'middle_name' => $middle_name,
+                'last_name'   => $last_name,
+            ]);
+
+        return Redirect::to('/');
+
     }
 }

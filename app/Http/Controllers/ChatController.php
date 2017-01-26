@@ -70,4 +70,18 @@ class ChatController extends Controller {
             ]);
     }
 
+    public function test() {
+        $result = DB::table('message')
+            ->get();
+        $result = $result->toArray();
+
+        dd($result);
+//        return $result;
+
+    }
+
+    public function RegisterAccount() {
+
+    }
+
 }

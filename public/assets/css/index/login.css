@@ -1,0 +1,83 @@
+body, html {
+    height:100%;
+}
+.chat-container {
+    margin:0 auto;
+    padding:0;
+    height:100%;
+    width:100%;
+    position: relative;
+    padding-top:15px;
+    padding-bottom:15px;
+}
+.chatbox-container-login {
+    margin: 0 auto;
+    width: 70%;
+    height: 100%;
+    background: url(../../../assets/img/background.png)no-repeat center/cover;
+    border: 1px solid #d3d3d3;
+    border-radius: 5px;
+}
+.panel.panel-body {
+    width: 30%;
+    margin: 0 auto;
+    position: relative;
+    top: 25%;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border: 1px solid rgba(0,0,0,0.6);
+}
+.login-section .input-group {
+    margin:0 auto;
+    padding:5px;
+}
+.login-section .input-group button {
+    width:100%;
+    border-radius:0px;
+}
+.alert-danger {
+    font-size: 11px;
+}
+.alert-danger li {
+    text-align: left;
+}
+.title-section header {
+    margin: 0 auto;
+    text-align: center;
+    padding-bottom: 20px;
+    font-size: 20px;
+    color: #213444;
+}
+.input-group a.register {
+    text-align: left !important;
+    position: relative;
+    color: #15252d;
+    font-size:10px;
+    cursor: pointer;
+}
+button#submit{width: 78%;margin-top:5px;}
+button#btn-register{width:97%;margin-top:5px;}
+.panel-register .input-group {
+    margin: 0 auto;
+    padding: 5px;
+    width: 100%;
+}
+.modal {
+    text-align: center;
+    padding: 0!important;
+}
+
+.modal:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    margin-right: -4px;
+}
+
+.modal-dialog {
+    display: inline-block;
+    text-align: left;
+    vertical-align: middle;
+}

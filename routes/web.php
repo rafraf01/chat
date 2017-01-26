@@ -18,8 +18,8 @@
 /**@module get login
  * @desc perform function login
  */
-Route::match(array('GET','POST'),'login'            ,   'Auth\LoginController@authenticate');
-Route::match(array('GET','POST'),'index'             ,   'ChatController@home');
+Route::match(array('GET','POST'),'login'                ,   'Auth\LoginController@authenticate');
+Route::post('register'                                  ,   'Auth\RegisterController@CreateAccount');
 
 Route::group(['middleware'=>['afterAuth']],function(){
     Route::get('/','ChatController@chatLogin');
@@ -27,12 +27,13 @@ Route::group(['middleware'=>['afterAuth']],function(){
 
 Route::group(['middleware'=>['auth']],function(){
     Route::match(array('GET','POST'),'logout'           ,   'Auth\LoginController@logout');
+    Route::match(array('GET','POST'),'index'            ,   'ChatController@home');
 
-    Route::get('/home'                     ,    'ChatController@chat');
-
-    Route::get('/loadUserActive', 'ChatController@LoadActive');
-    Route::post('/saveMessage', 'ChatController@saveMessage');
-    Route::post('/changestate', 'ChatController@updateStatus');
+    Route::get('/home'                                  ,   'ChatController@chat');
+    Route::get('/gettest'                               ,   'ChatController@test');
+    Route::get('/loadUserActive'                        ,   'ChatController@LoadActive');
+    Route::post('/saveMessage'                          ,   'ChatController@saveMessage');
+    Route::post('/changestate'                          ,   'ChatController@updateStatus');
 });
 
 

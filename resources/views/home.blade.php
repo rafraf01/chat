@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/css/basic/emojify.min.css" />
 <div class="chat-container">
     <div class="chatbox-container">
-        <input type="hidden" id="uid" class="UserIsLogged" value="{{ Auth::user()->user_id }}" data-userid="{{ Auth::user()->user_id }}" data-user-status="{{ Auth::user()->status }}">
+        <input type="hidden" id="uid" class="UserIsLogged" data-userid="{{ Auth::user()->user_id }}" data-user-status="{{ Auth::user()->status }}">
         <div class="upper-container">
             <div class="current-user">
                 <img class="account-photo" data-toggle="dropdown">
@@ -91,12 +91,17 @@
 <script type="text/javascript">
     $(document).ready(function(){
 
+
+        /* disabled chat on first load */
+//        $('#msg').prop('disabled',true);
+//        $('#btn-send').prop('disabled',true);
+//        $('#btn-send').css('cursor','not-allowed');
+
         load(); // load function
 
-        var socket = io.connect('192.168.1.188:8890');
+        var socket = io.connect('192.168.1.188:8890'); /*  localhost connection */
         /* send message when BUTTON is clicked */
         $('#btn-send').on('click',function(){
-
             if ($('#msg').val() == ''){
                 return false;
             }
@@ -304,5 +309,18 @@
             get_user_status();
         });
 
+        function getMessage() {
+            $.ajax({
+                url: '/gettest',
+                type: 'GET',
+                data: {
+//                    'user_id':       $('#uid').data('userid'),
+                    '_token' :       $('meta[name="csrf_token"]').attr('content')
+                },
+                success:function(data){
+
+                }
+            });
+        }
 
 </script>

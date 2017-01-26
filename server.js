@@ -8,7 +8,9 @@ var io = require('socket.io')(server);
 
 server.listen(8890);
 //server.listen(5858);
+//var clients= [];
 io.on('connection', function (socket) {
+//    clients.push(socket.id);
 
     console.log("client connected");
 
