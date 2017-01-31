@@ -1,6 +1,5 @@
 {!! Theme::asset()->add('chat.css','assets/css/index/chat.css') !!}
 {!! Theme::asset()->add('chat.css','assets/css/index/login.css') !!}
-
 <div class="chat-container">
     <div class="chatbox-container-login">
         <div class="panel panel-body">

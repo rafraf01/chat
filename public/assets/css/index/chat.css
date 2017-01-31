@@ -44,6 +44,9 @@ body, html {
     padding-left:20px;
     font-size:11px;
 }
+input.search.search-2 {
+    margin: 0 auto;
+}
 .search:focus{
     border-bottom:1px solid #213444;
     box-shadow: none;
@@ -96,6 +99,10 @@ ul#status-menu {
     content: "do not disturb";
     width:90px;
 }
+.user-lists {
+    overflow: auto;
+    height: 87%;
+}
 .user-lists ul {padding:0;}
 .user-lists ul li {
     padding:15px 10px;
@@ -124,6 +131,7 @@ ul#status-menu {
     display:block;
     border-radius:50%;
     background:#fff;
+    /*url(../../../assets/img/emoji/baby.png) no-repeat center/cover*/
     float:left;
     margin-left:8px;
 }
@@ -148,6 +156,16 @@ ul#status-menu {
     left: 0;
     right: 0;
     border-bottom: 1px solid #d3d3d3;
+}
+span.who {
+    display: block;
+    position: absolute;
+    margin: 0 auto;
+    width: 50%;
+    top: 23px;
+    left: 20px;
+    font-size: 18px;
+    color:#605b5b;
 }
 .msgs-container {
     height: 385px;
@@ -215,7 +233,7 @@ ul#status-menu {
     float:right;
     /*height:60px;*/
 }
-.messages > p {
+.messages > div {
     font-size: 11px;
     margin: 0px 10px;
     word-wrap: break-word;
@@ -248,7 +266,7 @@ ul#status-menu {
     height: 40px;
     border-radius: 50%;
     margin-top: 7px;
-    margin-left: 1px;
+    margin-left: 5px;
 }
 .base-receive .avatar > img {
     margin-bottom: 17px !important;
@@ -265,6 +283,12 @@ ul#status-menu {
     left: 0;
     right: 0;
     border-top:1px solid #d3d3d3;
+}
+textarea#msg {
+    border: none;
+    background: transparent;
+    outline: none;
+    box-shadow: none;
 }
 .chat-send-message textarea.form-control {
     resize:none;
@@ -346,6 +370,7 @@ button#btn-send:hover i {color: #15252d;}
     text-align: center;
     display: block;
     padding: 5px 10px;
+    height: 25px;
 }
 .country {margin-top: 10px;background:url(../../../assets/img/location.png) no-repeat left /20px;}
 .email { background: url(../../../assets/img/email.png) no-repeat 4px 7px /12px; }
@@ -410,23 +435,113 @@ span#user-state {
     left: 18px;
 }
 .active-user { background: #7fba00 url(../../img/status/online.png) no-repeat center /cover; }
-.offline-user { background: #d3d3d3 url(../../img/status/offline.png) no-repeat center /cover; }
+.offline-user { background: #d3d3d3 url(../../img/status/offline-1.png) no-repeat center /cover; }
 .away-user { background: #c8b305 url(../../img/status/away.png) no-repeat center /cover;}
 .disturb-user { background: #a70004 url(../../img/status/disturb.png) no-repeat center /cover;}
-.logout {
+.logout , .add-friend{
     position: absolute;
     right: 20px;
     top: 8px;
     margin: 0 auto;
     color: lightgrey;
-    font-size: 11px;
     cursor: pointer;
 }
-.logout:hover {color:grey;text-decoration: none;}
+.add-friend {
+    right: 45px !important;
+    cursor: pointer;
+}
+.logout:hover,.add-friend:hover {color:grey;text-decoration: none;}
 
 .emoji {
     width: 1.5em;
     height: 1.5em;
     display: inline-block;
     margin-bottom: -0.25em;
+}
+.friends-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    display: none;
+    float: left;
+    min-width: 160px;
+    padding: 5px 0;
+    margin: 2px 0 0;
+    font-size: 14px;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: 4px;
+    -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    box-shadow: 0 6px 12px rgba(0,0,0,.175)
+}
+.dropdown2 {
+    width: 100%;
+    height: 300px;
+    padding: 10px;
+    margin-top: 7px;
+}
+.dropdown2 h4 {
+    font-size: 11px;
+    font-weight: 600;
+}
+.triangle {
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 7px solid #fff;
+    position: absolute;
+    top: -7px;
+    right: 45px;
+}
+.close-btn {
+    float: right;
+    font-size: 10px;
+    padding: 0px 0px 10px;
+    cursor: pointer;
+}
+.friend-container {
+    overflow: auto;
+    height:64%;
+}
+#friend-list {
+    list-style:none;
+    padding:0;
+}
+#friend-list li {
+    height: 45px;
+    width: 100%;
+    display: block;
+    cursor:pointer;
+}
+.friend-lists i{
+    color:#213444;
+    cursor:pointer;
+    margin-top: 12px;
+    font-size: 12px;
+    float: right;
+    /*padding-right: 10px;*/
+}
+.img-container {
+    width: 25%;
+    display: block;
+    float: left;
+}
+img.img-friends {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: 1px solid;
+}
+span.name {
+    display: block;
+    float: left;
+    margin: 10px 5px;
+    font-size:11px;
 }
